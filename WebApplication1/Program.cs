@@ -1,7 +1,3 @@
-using Core.Interfaces;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,12 +9,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<Context>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
 
     options.LogTo(Console.WriteLine, new[] { Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuting });
 });
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 
@@ -34,24 +30,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-using var scope = app.Services.CreateScope();
-
-IServiceProvider services  = scope.ServiceProvider;
-
-Context context = services.GetRequiredService<Context>();
-
-var logger = services.GetRequiredService<ILogger<Program>>();
-
-try
-{
-    await context.Database.MigrateAsync();
-    await StoreContextSeed.SeedAsync(context);
-}
-
-catch (Exception ex)
-{
-    logger.LogError(ex, "An error occurred during migration");
-}
 
 app.Run();

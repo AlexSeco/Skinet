@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -29,6 +30,9 @@ public class Startup
 
             options.LogTo(Console.WriteLine, new[] { Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuting });
         });
+
+        services.AddScoped<IProductRepository, ProductRepository>();
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
