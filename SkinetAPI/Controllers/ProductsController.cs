@@ -2,23 +2,22 @@
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SkinetAPI.DTOs;
+using SkinetAPI.Errors;
 
 namespace SkinetAPI.Controllers;
 
 public class ProductsController : BaseController
 {
-    private readonly IGenericRepository<Products> _productsRepo;
+    private readonly IGenericRepository<Product> _productsRepo;
     private readonly IGenericRepository<ProductBrand> _brandsRepo;
     private readonly IGenericRepository<ProductType> _typesRepo;
     private readonly IMapper _mapper;
 
     public ProductsController
         (
-        IGenericRepository<Products> productsRepo, 
+        IGenericRepository<Product> productsRepo, 
         IGenericRepository<ProductBrand> brandsRepo,
         IGenericRepository<ProductType> typesRepo,
         IMapper mapper
@@ -37,18 +36,22 @@ public class ProductsController : BaseController
 
         var products = await _productsRepo.ListAsync(spec);
 
-        return Ok(_mapper.Map<IReadOnlyList<Products>, IReadOnlyList<ProductToReturnDTO>>(products));
+        return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDTO>>(products));
     }
 
 
     [HttpGet("{id}")]
+    [ProducesResponseType(200, Type = typeof(Product))]
+    [ProducesResponseType(typeof(APIResponse), 404)]
     public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
     {
         ProductsWithTypesAndBrandsSpecification spec = new(id);
 
-        Products product = await _productsRepo.GetEntityWithSpec(spec);
+        Product product = await _productsRepo.GetEntityWithSpec(spec);
 
-        return _mapper.Map<Products, ProductToReturnDTO>(product);
+        if (product == null) return NotFound(new APIResponse(400));
+
+        return _mapper.Map<Product, ProductToReturnDTO>(product);
     }
 
     [HttpGet("brands")]

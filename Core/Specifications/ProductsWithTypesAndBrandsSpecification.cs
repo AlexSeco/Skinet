@@ -1,14 +1,8 @@
 ﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Specifications;
 
-public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Products>
+public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
     public ProductsWithTypesAndBrandsSpecification()
     {
@@ -16,7 +10,7 @@ public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product
         AddInclude(x => x.ProductBrand);
     }
 
-    public ProductsWithTypesAndBrandsSpecification(int id) : base(x => x.Id == id)
+    public ProductsWithTypesAndBrandsSpecification(int id) : base(x => x.Id == id) // First instantiation everytime this constructor is used
     {
         AddInclude(x => x.ProductType);
         AddInclude(x => x.ProductBrand);

@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using AutoMapper.Execution;
 using Core.Entities;
 using SkinetAPI.DTOs;
 
 namespace SkinetAPI.Helpers;
 
-public class ProductUrlResolver : IValueResolver<Products, ProductToReturnDTO, string>
+public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDTO, string>
 {
     private readonly IConfiguration _config;
 
@@ -14,7 +13,7 @@ public class ProductUrlResolver : IValueResolver<Products, ProductToReturnDTO, s
         _config = config;
     }
 
-    public string Resolve(Products source, ProductToReturnDTO destination, string destMember, ResolutionContext context)
+    public string Resolve(Product source, ProductToReturnDTO destination, string destMember, ResolutionContext context)
     {
         if (!string.IsNullOrEmpty(source.PictureUrl))
         {

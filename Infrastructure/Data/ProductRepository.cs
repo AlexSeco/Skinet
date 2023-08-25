@@ -18,12 +18,12 @@ public class ProductRepository : IProductRepository
         return await _db.ProductBrands.ToListAsync();
     }
 
-    public async Task<Products> GetProductByIdAsync(int id)
+    public async Task<Product> GetProductByIdAsync(int id)
     {
         return await _db.Products.Include(p => p.ProductBrand).Include(p => p.ProductType).FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public async Task<IReadOnlyList<Products>> GetProductsAsync()
+    public async Task<IReadOnlyList<Product>> GetProductsAsync()
     {
         return await _db.Products.Include(p => p.ProductBrand).Include(p => p.ProductType).ToListAsync();
     }

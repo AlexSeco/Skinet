@@ -29,7 +29,7 @@ public class StoreContextSeed
         {
             var productsData = File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
 
-            var products = JsonSerializer.Deserialize<List<Products>>(productsData);
+            var products = JsonSerializer.Deserialize<List<Product>>(productsData);
 
             context.Products.AddRange(products);
         }

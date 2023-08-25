@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace SkinetAPI.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
