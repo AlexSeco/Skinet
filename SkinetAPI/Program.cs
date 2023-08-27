@@ -37,7 +37,7 @@ app.MapControllers();
 
 using var scope = app.Services.CreateScope();
 
-IServiceProvider services  = scope.ServiceProvider;
+IServiceProvider services = scope.ServiceProvider;
 
 Context context = services.GetRequiredService<Context>();
 
