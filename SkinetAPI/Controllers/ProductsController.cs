@@ -56,7 +56,7 @@ public class ProductsController : BaseController
 
         Product product = await _productsRepo.GetEntityWithSpec(spec);
 
-        if (product == null) return NotFound(new APIResponse(400));
+        if (product == null) return NotFound(new APIResponse(404));
 
         return _mapper.Map<Product, ProductToReturnDTO>(product);
     }
