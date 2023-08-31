@@ -3,6 +3,7 @@ using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SkinetAPI.Errors;
+using StackExchange.Redis;
 
 namespace SkinetAPI.Extensions;
 
@@ -20,9 +21,16 @@ public static class ApplicationServicesExtensions
             options.LogTo(Console.WriteLine, new[] { Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuting });
         });
 
+        services.AddSingleton<IConnectionMultiplexer>(c => {
+            var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+            return ConnectionMultiplexer.Connect(options);
+        });
+
         services.AddScoped<IProductRepository, ProductRepository>();
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        
+        services.AddScoped<IBasketRepository, BasketRepository>();
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
