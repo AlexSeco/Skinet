@@ -1,4 +1,8 @@
+using Core.Entities.Identity;
 using Infrastructure.Data;
+using Infrastructure.Data.Identity;
+using Infrastructure.Identity.Migrations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SkinetAPI.Extensions;
 using SkinetAPI.Middleware;
@@ -10,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddAppServices(builder.Configuration);
+
+builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,6 +37,7 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -40,18 +47,24 @@ using var scope = app.Services.CreateScope();
 IServiceProvider services = scope.ServiceProvider;
 
 Context context = services.GetRequiredService<Context>();
+AppIdentityDbContext identityContext = services.GetRequiredService<AppIdentityDbContext>();
+UserManager<AppUser> userManager = services.GetRequiredService<UserManager<AppUser>>();
 
 var logger = services.GetRequiredService<ILogger<Program>>();
 
 try
 {
     await context.Database.MigrateAsync();
+    await identityContext.Database.MigrateAsync();
     await StoreContextSeed.SeedAsync(context);
+    await AppIdentityDbContextSeed.SeedUserAsync(userManager);
 }
 
 catch (Exception ex)
 {
     logger.LogError(ex, "An error occurred during migration");
 }
+
+
 
 app.Run();

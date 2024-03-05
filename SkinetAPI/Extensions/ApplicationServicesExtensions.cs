@@ -1,7 +1,9 @@
 ﻿using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using SkinetAPI.Errors;
 using StackExchange.Redis;
 
@@ -12,7 +14,32 @@ public static class ApplicationServicesExtensions
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(opt => 
+        {
+            opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Scheme = "Bearer",
+                Description = "Please insert JWT token into field"
+            });
+
+            opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+                }
+            });
+        });
 
         services.AddDbContext<Context>(options =>
         {
@@ -31,6 +58,8 @@ public static class ApplicationServicesExtensions
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         
         services.AddScoped<IBasketRepository, BasketRepository>();
+
+        services.AddScoped<ITokenService, TokenService>();
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

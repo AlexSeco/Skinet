@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkinetAPI.Errors;
 
@@ -39,5 +40,12 @@ public class BuggyController : BaseController
     public ActionResult GetNotFoundRequest(int id)
     {
         return Ok();
+    }
+
+    [HttpGet("testauth")]
+    [Authorize]
+    public ActionResult<string> GetSecretText()
+    {
+        return "Secret Stuff";
     }
 }
