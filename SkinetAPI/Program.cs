@@ -17,11 +17,15 @@ builder.Services.AddAppServices(builder.Configuration);
 
 builder.Services.AddIdentityServices(builder.Configuration);
 
+builder.Services.AddSwaggerDocumentation();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
+app.UseSwaggerDocumentation();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

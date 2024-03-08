@@ -13,33 +13,6 @@ public static class ApplicationServicesExtensions
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(opt => 
-        {
-            opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Type = SecuritySchemeType.Http,
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Scheme = "Bearer",
-                Description = "Please insert JWT token into field"
-            });
-
-            opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                },
-                new string[] {}
-                }
-            });
-        });
 
         services.AddDbContext<Context>(options =>
         {
