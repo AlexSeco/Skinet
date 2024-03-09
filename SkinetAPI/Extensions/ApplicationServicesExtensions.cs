@@ -34,6 +34,10 @@ public static class ApplicationServicesExtensions
 
         services.AddScoped<ITokenService, TokenService>();
 
+        services.AddScoped<IOrderService, OrderService>();
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.Configure<ApiBehaviorOptions>(options =>

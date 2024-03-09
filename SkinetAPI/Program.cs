@@ -60,7 +60,10 @@ try
 {
     await context.Database.MigrateAsync();
     await identityContext.Database.MigrateAsync();
+    await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.DeliveryMethods ON");
     await StoreContextSeed.SeedAsync(context);
+    await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.DeliveryMethods OFF");
+
     await AppIdentityDbContextSeed.SeedUserAsync(userManager);
 }
 
