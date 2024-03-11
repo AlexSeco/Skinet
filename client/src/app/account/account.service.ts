@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { ReplaySubject, map, of } from 'rxjs';
-import { User } from '../models/user';
+import { Address, User } from '../models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -65,5 +65,13 @@ export class AccountService {
         }
       })
     )
+  }
+
+  getUserAddress(){
+    return this.http.get<Address>(this.baseUrl + 'account/address');
+  }
+
+  updateUserAddress(address: Address) {
+    return this.http.put(this.baseUrl + 'account/address', address);
   }
 }

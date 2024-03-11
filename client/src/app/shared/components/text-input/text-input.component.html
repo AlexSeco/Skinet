@@ -4,7 +4,7 @@
     [formControl] = "control"
     placeholder = "{{label}}"
     class="form-control"
-    [ngClass]="(control.dirty) ? control.invalid ? 'is-invalid' : 'is-valid' : null"
+    [ngClass]="(control.dirty || control.touched) ? control.invalid ? 'is-invalid' : 'is-valid' : null"
     >
     <div *ngIf="control.status === 'PENDING'" class="fa fa-spinner fa-spin loader"></div>
     <label for="floatingInput">{{label}}</label>

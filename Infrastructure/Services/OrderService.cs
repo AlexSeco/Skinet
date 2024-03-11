@@ -2,7 +2,6 @@ using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
 using Core.Specifications;
-using Infrastructure.Data;
 
 namespace Infrastructure.Services;
 

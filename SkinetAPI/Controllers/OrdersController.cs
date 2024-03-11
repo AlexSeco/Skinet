@@ -10,7 +10,6 @@ using SkinetAPI.Extensions;
 
 namespace SkinetAPI.Controllers;
 
-[Authorize]
 public class OrdersController : BaseController
 {
     private readonly IOrderService _orderService;
@@ -21,13 +20,13 @@ public class OrdersController : BaseController
         _orderService = orderService;
         _mapper = mapper;
     }
-
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Order>> CreateOrder(OrderDTO orderDTO)
     {
         string email = HttpContext.User?.RetrieveEmail();
 
-        Address address = _mapper.Map<AddressDTO, Address>(orderDTO.ShipToAdress);
+        Address address = _mapper.Map<AddressDTO, Address>(orderDTO.ShipToAddress);
 
         Order order = await _orderService.CreateOrderAsync(email, orderDTO.DeliveryMethodId, orderDTO.BasketId, address);
 
@@ -35,7 +34,7 @@ public class OrdersController : BaseController
         
         return Ok(order);
     }
-
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<OrderToReturnDTO>>> GetOrdersForUser()
     {
@@ -45,7 +44,7 @@ public class OrdersController : BaseController
 
         return Ok(_mapper.Map<IReadOnlyList<OrderToReturnDTO>>(orders));
     }
-
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<OrderToReturnDTO>> GetOrderByIdForUser(int id)
     {
@@ -57,7 +56,8 @@ public class OrdersController : BaseController
 
         return Ok(_mapper.Map<IReadOnlyList<OrderToReturnDTO>>(order));
     }
-
+    
+    [Authorize]
     [HttpGet("deliveryMethods")]
     public async Task<ActionResult<IReadOnlyList<DeliveryMethods>>> GetDeliveryMethods()
     {
