@@ -28,6 +28,8 @@ public static class ApplicationServicesExtensions
 
         services.AddScoped<IProductRepository, ProductRepository>();
 
+        services.AddScoped<IPaymentService, PaymentService>();
+
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         
         services.AddScoped<IBasketRepository, BasketRepository>();

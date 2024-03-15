@@ -34,11 +34,10 @@ public class OrdersController : BaseController
         
         return Ok(order);
     }
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<OrderToReturnDTO>>> GetOrdersForUser()
     {
-        string email = HttpContext.User.RetrieveEmail();
+        string email = HttpContext.User?.RetrieveEmail();
 
         var orders = await _orderService.GetOrdersForUserAsync(email);
 
@@ -48,13 +47,13 @@ public class OrdersController : BaseController
     [HttpGet("{id}")]
     public async Task<ActionResult<OrderToReturnDTO>> GetOrderByIdForUser(int id)
     {
-        string email = HttpContext.User.RetrieveEmail();
+        string email = HttpContext.User?.RetrieveEmail();
 
         Order order = await _orderService.GetOrderByIdAsync(id, email);
 
         if (order == null) return NotFound(new APIResponse(404));
 
-        return Ok(_mapper.Map<IReadOnlyList<OrderToReturnDTO>>(order));
+        return Ok(_mapper.Map<Order, OrderToReturnDTO>(order));
     }
     
     [Authorize]

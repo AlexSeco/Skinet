@@ -42,19 +42,34 @@ public class OrderService : IOrderService
         // calculate subtotal
 
         decimal subtotal = items.Sum(item => item.Price * item.Quantity);
-        // create order
 
-        Order order = new(items, buyerEmail, shippingAdress, deliveryMethod, subtotal);
+        //check to check if order exists
 
-        // TO DO: save to db
+        OrderByPaymentIntentIdSpecification spec = new(basket.PaymentIntentId);
+
+        var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+        if (order != null)
+        {
+            order.ShipToAdress = shippingAdress;
+            order.DeliveryMethod = deliveryMethod;
+            order.Subtotal = subtotal;
+            _unitOfWork.Repository<Order>().Update(order);
+        }
+        else
+        {
+        //create order
+
+        order = new(items, buyerEmail, shippingAdress, deliveryMethod, subtotal, basket.PaymentIntentId);
+
+        // save to db
 
         _unitOfWork.Repository<Order>().Add(order);
+        }
+
         var result = await _unitOfWork.Complete();
 
         if (result <= 0) return null;
-
-        //delete basket
-        await _basketRepo.DeleteBasketAsync(basketId);
 
         return order;
     }

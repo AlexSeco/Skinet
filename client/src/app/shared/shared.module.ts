@@ -12,6 +12,7 @@ import { StepperComponent } from './components/stepper/stepper.component';
 import {CdkStepperModule} from '@angular/cdk/stepper'; 
 import { BasketSummaryComponent } from './basket-summary/basket-summary.component';
 import { RouterModule } from '@angular/router';
+import { OrderDetailedComponent } from './order-detailed/order-detailed.component';
 
 
 
@@ -23,7 +24,8 @@ import { RouterModule } from '@angular/router';
     OrderTotalsComponent,
     TextInputComponent,
     StepperComponent,
-    BasketSummaryComponent
+    BasketSummaryComponent,
+    OrderDetailedComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { RouterModule } from '@angular/router';
     TextInputComponent,
     StepperComponent,
     CdkStepperModule,
-    BasketSummaryComponent
+    BasketSummaryComponent,
+    OrderDetailedComponent
   ]
 })
 export class SharedModule { }
