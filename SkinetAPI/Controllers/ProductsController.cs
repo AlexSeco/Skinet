@@ -31,6 +31,7 @@ public class ProductsController : BaseController
     }
 
     [HttpGet]
+    [Cached(600)]
     public async Task<ActionResult<Pagination<ProductToReturnDTO>>> GetProducts([FromQuery]ProductSpecParams productParams)
     {
         ProductsWithTypesAndBrandsSpecification spec = new(productParams);
@@ -46,7 +47,7 @@ public class ProductsController : BaseController
         return Ok(new Pagination<ProductToReturnDTO>(productParams.PageIndex, productParams.PageSize, totalItems, data));
     }
 
-
+    [Cached(600)]
     [HttpGet("{id}")]
     [ProducesResponseType(200, Type = typeof(Product))]
     [ProducesResponseType(typeof(APIResponse), 404)]
@@ -61,12 +62,14 @@ public class ProductsController : BaseController
         return _mapper.Map<Product, ProductToReturnDTO>(product);
     }
 
+    [Cached(600)]
     [HttpGet("brands")]
     public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
     {
         return Ok(await _brandsRepo.ListAllAsync());
     }
 
+    [Cached(600)]
     [HttpGet("types")]
     public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
     {

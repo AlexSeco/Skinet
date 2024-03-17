@@ -26,6 +26,9 @@ public static class ApplicationServicesExtensions
             return ConnectionMultiplexer.Connect(options);
         });
 
+        services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+
+
         services.AddScoped<IProductRepository, ProductRepository>();
 
         services.AddScoped<IPaymentService, PaymentService>();

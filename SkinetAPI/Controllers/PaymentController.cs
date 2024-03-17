@@ -1,7 +1,6 @@
 using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkinetAPI.Errors;
