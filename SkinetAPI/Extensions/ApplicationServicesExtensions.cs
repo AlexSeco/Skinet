@@ -16,7 +16,7 @@ public static class ApplicationServicesExtensions
 
         services.AddDbContext<Context>(options =>
         {
-            options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
 
             options.LogTo(Console.WriteLine, new[] { Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuting });
         });

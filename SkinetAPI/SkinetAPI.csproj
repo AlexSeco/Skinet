@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Content Include="Content\**" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ using Infrastructure.Data.Identity;
 using Infrastructure.Identity.Migrations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using SkinetAPI.Extensions;
 using SkinetAPI.Middleware;
 
@@ -38,6 +39,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions {
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Content")), RequestPath = "/Content"
+});
 
 app.UseCors("CorsPolicy");
 
@@ -45,6 +49,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToController("Index", "Fallback");
 
 using var scope = app.Services.CreateScope();
 
@@ -60,9 +65,7 @@ try
 {
     await context.Database.MigrateAsync();
     await identityContext.Database.MigrateAsync();
-    await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.DeliveryMethods ON");
     await StoreContextSeed.SeedAsync(context);
-    await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.DeliveryMethods OFF");
 
     await AppIdentityDbContextSeed.SeedUserAsync(userManager);
 }

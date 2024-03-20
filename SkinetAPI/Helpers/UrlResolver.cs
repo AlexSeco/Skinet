@@ -10,7 +10,7 @@ public class UrlResolver<TSource, TDestination> : IValueResolver<TSource, TDesti
     private readonly string _propertyName;
     
 
-    public string url = "https://localhost:5001/";
+    public string url = "https://localhost:5001/Content/";
 
     public UrlResolver(string propertyName)
     {

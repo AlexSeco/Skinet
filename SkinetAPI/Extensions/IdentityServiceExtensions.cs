@@ -14,7 +14,7 @@ public static class IdentityServiceExtensions
     {
         services.AddDbContext<AppIdentityDbContext>(opt => 
         {
-            opt.UseSqlServer(config.GetConnectionString("IdentityConnection"));
+            opt.UseNpgsql(config.GetConnectionString("IdentityConnection"));
 
         });
 

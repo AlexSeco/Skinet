@@ -20,7 +20,7 @@
             "allowedCommonJsDependencies": [
               "cuid"
             ],
-            "outputPath": "dist/client",
+            "outputPath": "../SkinetApi/wwwroot",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -36,15 +36,24 @@
               "src/styles.scss"
             ],
             "scripts": []
+            
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              },
+
               "budgets": [
                 {
                   "type": "initial",
@@ -65,7 +74,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
