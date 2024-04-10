@@ -125,7 +125,7 @@ export class BasketService {
       quantity: 0,
       pictureUrl: item.pictureUrl,
       brand: item.productBrand,
-      type: item.productType
+      type: item.productType,
     }
   }
 
